@@ -1,0 +1,4 @@
+Id : 02
+Name : Amar
+Salary : 150000
+

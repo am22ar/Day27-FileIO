@@ -23,41 +23,23 @@ import java.util.List;
 import static java.nio.file.StandardWatchEventKinds.*;
 
 public class EmployeePayrollService {
-	public void listFilesDirectory() throws IOException, InterruptedException  {
-		// Activate watch Service
-		WatchService watchService = FileSystems.getDefault().newWatchService();
 
-		// Convert location to file path
-		Path path = Paths.get("C:\\\\Users\\\\Amar\\\\Desktop\\\\RFP-Java-Basics\\\\FileIO\\\\src\\\\main\\\\java\\\\com\\\\fileio\\\\WatchService");
+	public void listFilesDirectory() throws IOException, InterruptedException {
+		ArrayList<String> writing = new ArrayList<String>();
 
-		// Register watch service on above path ==> Pass events to be watched
-		// (Create/Delete/Modify)
-		path.register(watchService, ENTRY_CREATE, ENTRY_DELETE);
+		writing.add("Id : 02");
+		writing.add("Name : Amar");
+		writing.add("Salary : 150000");
+//		File Exist => Override                        
+		// Will create new file if not exist
+		Files.write(Paths.get(
+				"C:\\Users\\Amar\\Desktop\\RFP-Java-Basics\\FileIO\\src\\main\\java\\com\\fileio\\TestDemo.txt"),
+				writing, StandardOpenOption.CREATE);
+		System.out.println("Exporting Into File Is Done...");
+	}
 
-
-		List<String> logs = new ArrayList<String>();
-
-
-		boolean poll = true;
-		while (poll) {
-
-			// Reference / Pointer current file or folder watching
-			WatchKey key = watchService.take();
-
-			// Printing the events (Create / Modify / Delete)
-			for (WatchEvent<?> event : key.pollEvents()) {
-				System.out.println("Event kind : " + event.kind() + " - File : " + event.context());
-
-				logs.add("Event kind : " + event.kind() + " - File : " + event.context());
-			}
-
-			Files.write(Paths.get("C:\\Users\\Amar\\Desktop\\RFP-Java-Basics\\FileIO\\src\\main\\java\\com\\fileio\\WatchService"), logs, StandardOpenOption.CREATE);
-	
-			// Reseting the reference so that it can be used later
-			poll = key.reset();
-			}}
-public static void main(String[] args) throws IOException, InterruptedException {
-	EmployeePayrollService obj=new EmployeePayrollService();
-	obj.listFilesDirectory();
-}
+	public static void main(String[] args) throws IOException, InterruptedException {
+		EmployeePayrollService obj = new EmployeePayrollService();
+		obj.listFilesDirectory();
+	}
 }
